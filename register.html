@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Registration</title>
+  <style>
+    /* Keep your existing styles and add only necessary adjustments */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .header h2 {
+      color: #007bff;
+      font-size: 32px;
+    }
+
+    .search-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-container input {
+      padding: 12px;
+      width: 250px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .search-container button {
+      padding: 12px 20px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .filter-container {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .filter-container button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .event-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .event-card {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 250px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .event-card h4 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .event-card p {
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .form-container {
+      display: none;
+      background-color: white;
+      padding: 30px;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+    }
+
+    .form-container h3 {
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    .form-container label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    .form-container input, .form-container select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .form-container button:hover {
+      background-color: #0056b3;
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+      color: green;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h2>Event Registration</h2>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search for events..." oninput="searchEvents()">
+    <button onclick="searchEvents()">Search</button>
+    <button onclick="surpriseMe()">Surprise Me 🎉</button>
+  </div>
+
+  <div class="filter-container">
+    <button onclick="filterEvents('Free')">Free</button>
+    <button onclick="filterEvents('Weekend')">Weekend</button>
+    <button onclick="filterEvents('10km')">10km Nearby</button>
+  </div>
+
+  <div class="event-list" id="eventList"></div>
+
+  <div class="form-container" id="registrationForm">
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px;">
+      <a href="register.html" style="position: absolute; left: 0; text-decoration: none;">
+        <span style="color: #007bff;
+      font-size: 60px;font-weight: bold; font-size: 16px; cursor: pointer;font-size: 100;">←</span>
+      </a>
+      <h3 style="margin: 0;">Event Registration Form</h3>
+    </div>
+  
+    <form id="registerForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+  
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+  
+      <label for="phone">Phone Number</label>
+      <input type="text" id="phone" placeholder="Enter your phone number" required>
+  
+      <div id="eventLocation"></div>
+  
+      <label for="event">Event</label>
+      <input type="text" id="event" readonly>
+  
+      <button type="submit">Register</button>
+    </form>
+  
+    <br>
+  
+    <div class="success-message" id="successMessage">
+      You have successfully registered for the event!
+    </div>
+  </div>  
+
+<script>
+const events = [
+  { name: "AI Workshop", description: "A workshop on Artificial Intelligence.", district: "Madurai", allocation: "100 seats", slots: "20 left", type: "Free", day: "Weekend", distance: "5km" },
+  { name: "Cloud Computing Seminar", description: "A seminar on Cloud Computing.", district: "Madurai", allocation: "50 seats", slots: "10 left", type: "Paid", day: "Weekday", distance: "12km" },
+  { name: "Mathematics Course", description: "Advanced Mathematics course.", district: "Dindigul", allocation: "30 seats", slots: "5 left", type: "Paid", day: "Weekend", distance: "8km" },
+  { name: "Blockchain Workshop", description: "Blockchain technology basics.", district: "Dindigul", allocation: "40 seats", slots: "12 left", type: "Free", day: "Weekend", distance: "10km" },
+  { name: "Cybersecurity Bootcamp", description: "Hands-on cybersecurity training.", district: "Salem", allocation: "60 seats", slots: "15 left", type: "Paid", day: "Weekday", distance: "7km" },
+  { name: "UI/UX Design Meetup", description: "Design tips session.", district: "Coimbatore", allocation: "70 seats", slots: "22 left", type: "Free", day: "Weekend", distance: "10km" },
+  { name: "JavaScript Masterclass", description: "Master JavaScript in one day.", district: "Madurai", allocation: "80 seats", slots: "18 left", type: "Paid", day: "Weekend", distance: "5km" },
+  { name: "Python Programming", description: "Learn Python from scratch.", district: "Trichy", allocation: "90 seats", slots: "25 left", type: "Free", day: "Weekday", distance: "3km" },
+  { name: "Data Structures Crash Course", description: "Boost your DS skills.", district: "Coimbatore", allocation: "100 seats", slots: "30 left", type: "Paid", day: "Weekend", distance: "9km" },
+  { name: "Startup Ideation Contest", description: "Pitch your big idea.", district: "Salem", allocation: "20 seats", slots: "5 left", type: "Free", day: "Weekend", distance: "6km" },
+  { name: "Mobile App Hackathon", description: "Develop app in 24 hours.", district: "Dindigul", allocation: "25 seats", slots: "7 left", type: "Paid", day: "Weekend", distance: "10km" },
+  { name: "Machine Learning Conference", description: "Advanced ML techniques.", district: "Madurai", allocation: "60 seats", slots: "15 left", type: "Free", day: "Weekday", distance: "11km" },
+  { name: "Digital Marketing Workshop", description: "Grow online presence.", district: "Trichy", allocation: "70 seats", slots: "20 left", type: "Free", day: "Weekend", distance: "5km" },
+  { name: "Photography Basics", description: "Learn to shoot like a pro.", district: "Coimbatore", allocation: "40 seats", slots: "9 left", type: "Paid", day: "Weekday", distance: "8km" },
+  { name: "Game Development Session", description: "Build your first game.", district: "Salem", allocation: "50 seats", slots: "12 left", type: "Free", day: "Weekend", distance: "7km" },
+  { name: "Networking and CCNA Basics", description: "Intro to networking.", district: "Trichy", allocation: "30 seats", slots: "8 left", type: "Paid", day: "Weekend", distance: "5km" },
+  { name: "Robotics Expo", description: "Explore modern robots.", district: "Madurai", allocation: "40 seats", slots: "13 left", type: "Free", day: "Weekend", distance: "6km" },
+  { name: "Ethical Hacking Workshop", description: "Learn hacking legally.", district: "Dindigul", allocation: "35 seats", slots: "5 left", type: "Paid", day: "Weekend", distance: "9km" },
+  { name: "Public Speaking Seminar", description: "Enhance communication.", district: "Trichy", allocation: "45 seats", slots: "20 left", type: "Free", day: "Weekday", distance: "4km" },
+];
+
+function displayEvents(eventsToDisplay) {
+  const eventList = document.getElementById("eventList");
+  eventList.innerHTML = "";
+  eventsToDisplay.forEach(event => {
+    const eventCard = document.createElement("div");
+    eventCard.className = "event-card";
+    eventCard.innerHTML = `
+      <h4>${event.name}</h4>
+      <p>${event.description}</p>
+      <p><strong>Location:</strong> ${event.district}</p>
+      <p><strong>Seats:</strong> ${event.allocation}</p>
+      <p><strong>Available:</strong> ${event.slots}</p>
+    `;
+    eventCard.onclick = () => showRegistrationForm(event);
+    eventList.appendChild(eventCard);
+  });
+}
+
+function searchEvents() {
+  const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+  const filteredEvents = events.filter(event => event.name.toLowerCase().includes(searchQuery));
+  displayEvents(filteredEvents);
+}
+
+function filterEvents(filter) {
+  let filtered = [];
+  if (filter === 'Free') {
+    filtered = events.filter(event => event.type === 'Free');
+  } else if (filter === 'Weekend') {
+    filtered = events.filter(event => event.day === 'Weekend');
+  } else if (filter === '10km') {
+    filtered = events.filter(event => parseInt(event.distance) <= 10);
+  }
+  displayEvents(filtered);
+}
+
+function surpriseMe() {
+  const randomEvent = events[Math.floor(Math.random() * events.length)];
+  displayEvents([randomEvent]);
+}
+
+function showRegistrationForm(event) {
+  document.getElementById("eventLocation").textContent = `Location: ${event.district}`;
+  document.getElementById("event").value = event.name;
+  document.getElementById("registrationForm").style.display = "block";
+}
+
+document.getElementById("registerForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const registeredEvents = JSON.parse(localStorage.getItem('registeredEvents')) || [];
+  const registrationData = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    event: document.getElementById("event").value
+  };
+  const isDuplicate = registeredEvents.some(reg => reg.event === registrationData.event && reg.email === registrationData.email);
+  if (!isDuplicate) {
+    registeredEvents.push(registrationData);
+    localStorage.setItem('registeredEvents', JSON.stringify(registeredEvents));
+    document.getElementById("successMessage").style.display = "block";
+    document.getElementById("registerForm").reset();
+    setTimeout(() => {
+      document.getElementById("successMessage").style.display = "none";
+      document.getElementById("registrationForm").style.display = "none";
+    }, 3000);
+  } else {
+    alert("You have already registered for this event.");
+  }
+});
+
+displayEvents(events);
+</script>
+
+</body>
+</html>

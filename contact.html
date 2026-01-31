@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background-color: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .header h2 {
+      font-size: 28px;
+      margin: 0;
+    }
+    .header .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .header .nav-links .nav-item {
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .header .nav-links .nav-item:hover {
+      text-decoration: underline;
+    }
+    .contact-form-container {
+      width: 100%;
+      max-width: 800px;
+      background-color: white;
+      padding: 30px;
+      margin-top: 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .contact-form-container h3 {
+      color: #007bff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .contact-form-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-form-container input, .contact-form-container textarea {
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      outline: none;
+    }
+    .contact-form-container input:focus, .contact-form-container textarea:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+    .contact-form-container button {
+      padding: 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s;
+    }
+    .contact-form-container button:hover {
+      background-color: #0056b3;
+    }
+    .footer {
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Contact Us</h2>
+    <div class="nav-links">
+      <div class="nav-item" onclick="window.location.href='home.html'">Home</div>
+    </div>
+  </div>
+  <div class="contact-form-container">
+    <h3>Get In Touch</h3>
+    <form id="contactForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <textarea id="message" rows="6" placeholder="Your Message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <div class="footer">
+    <p>&copy; 2025 Event Management. All Rights Reserved.</p>
+  </div>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      if (name && email && message) {
+        alert(`Thank you, ${name}! Your message has been received.`);
+        document.getElementById('contactForm').reset();
+      } else {
+        alert('Please fill out all fields.');
+      }
+    });
+  </script>
+
+</body>
+</html>

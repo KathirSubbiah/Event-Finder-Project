@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register for Event</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background-color: #f0f8ff;  
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+    .register-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+    .register-container h2 {
+      color: #007bff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .register-container label {
+      font-size: 16px;
+      color: #333;
+      margin-top: 10px;
+      display: block;
+    }
+    .register-container input, .register-container select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .register-container input:focus, .register-container select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+    .register-container button {
+      padding: 12px 25px;
+      background-color: #007bff;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+    .register-container button:hover {
+      background-color: #0056b3;
+    }
+    .register-container .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .register-container .back-link a {
+      color: #007bff;
+      font-size: 16px;
+      text-decoration: none;
+    }
+    .register-container .back-link a:hover {
+      text-decoration: underline;
+    }
+    .success-message {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+      color: green;
+      font-size: 18px;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>Event Registration Form</h2>
+    <form id="registrationForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email address" required />
+
+      <label for="amount">Amount to Pay</label>
+      <input type="number" id="amount" name="amount" value="500" readonly />
+
+      <label for="paymentMethod">Payment Method</label>
+      <select id="paymentMethod" name="paymentMethod" required>
+        <option value="gpay">GPay</option>
+        <option value="cash">Cash</option>
+      </select>
+
+      <button type="submit">Submit Registration</button>
+      
+      <div class="success-message" id="successMessage">
+        You have successfully registered for the event!
+      </div>
+    </form>
+
+    <div class="back-link">
+      <a href="home.html">Back to Home Page</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      const amount = document.getElementById('amount').value;
+      const paymentMethod = document.getElementById('paymentMethod').value;
+
+      const eventTitle = "Trending Event"; 
+      let registeredEvents = JSON.parse(localStorage.getItem('registeredEvents')) || [];
+      registeredEvents.push({
+        name,
+        phone,
+        email,
+        event: "Hyped Event Registrants" 
+      });
+      localStorage.setItem('registeredEvents', JSON.stringify(registeredEvents));
+
+      let trendingEvents = JSON.parse(localStorage.getItem('trendingEvents')) || [];
+      trendingEvents.push({
+        name,
+        phone,
+        email,
+        event: eventTitle
+      });
+      localStorage.setItem('trendingEvents', JSON.stringify(trendingEvents));
+
+      const successMessage = document.getElementById('successMessage');
+      successMessage.style.display = 'block';
+
+      setTimeout(function() {
+        window.location.href = 'home.html';
+      }, 3000);
+    });
+  </script>
+</body>
+</html>

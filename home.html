@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f0f8ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      align-items: center; /* Center items vertically */
+      padding: 10px 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h2 {
+      color: #007bff;
+      font-size: 24px;
+      margin: 0;
+      display: flex;
+      align-items: center; /* Add this line */
+    }
+
+    /* Updated Flexbox for header items */
+    .header .nav-links {
+      display: flex;
+      align-items: center; /* Add this line */
+      justify-content: flex-start;
+      gap: 20px;
+    }
+
+    .header .nav-links .nav-item {
+      color: #007bff;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .header .nav-links .nav-item:hover {
+      text-decoration: underline;
+    }
+
+    .location {
+      color:rgba(36, 37, 39, 0.984);
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .location:hover {
+      text-decoration: underline;
+    }
+
+    .navigation-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 20px;
+    }
+
+    .navigation-container .nav-card {
+      background-color: #007bff;
+      color: white;
+      padding: 25px 40px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      width: 30%;
+      transition: 0.3s;
+      margin: 10px;
+    }
+
+    .navigation-container .nav-card:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .search-container input {
+      padding: 15px 25px;
+      border-radius: 30px;
+      border: 1px solid #ccc;
+      width: 350px;
+      font-size: 18px;
+      outline: none;
+      transition: all 0.3s ease-in-out;
+      background-color: #f9f9f9;
+    }
+
+    .search-container input:focus {
+      border-color: #007bff;
+      background-color: #e6f2ff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+
+    .search-container input::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+
+    .search-container button {
+      padding: 12px 20px;
+      margin-left: 10px;
+      background-color: #007bff;
+      border-radius: 30px;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-container button:hover {
+      background-color: #0056b3;
+    }
+
+    .category {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .category h3 {
+      color: #007bff;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .event-card {
+      background-color: white;
+      margin: 20px;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+      width: 30%;
+      vertical-align: top;
+      text-align: center;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .event-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .event-card h4 {
+      color: #007bff;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .event-card p {
+      color: #555;
+      font-size: 16px;
+    }
+
+    .event-card:hover {
+      transform: scale(1.05);
+    }
+
+    .filter-container {
+      display: flex;
+      gap: 20px;
+      margin-left: 20px;
+    }
+
+    .filter-container select {
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h2>🙌 Welcome ,<span id="login-username"></span> !</h2>
+    </div>
+    <div class="nav-links">
+      <div class="location"> 📍 Madurai</div>
+      <div class="nav-item" onclick="contact()">✉️ Contact Us</div>
+      <div class="nav-item" onclick="logOut()">🔓 Logout</div>
+    </div>
+  </div>
+
+  <div class="navigation-container">
+    <div class="nav-card" onclick="navigateToCreateEvent()">Create/Manage Event</div>
+    <div class="nav-card" onclick="navigateToRegisterEvent()">Register for Events</div>
+    <div class="nav-card" id="viewRegisterBtn" onclick="navigateToViewRegisteredEvents()">View Registered Events</div>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="searchBar" placeholder="Search for events..." oninput="searchEvents()" />
+    <button onclick="searchEvents()">Search</button>
+
+    <div class="filter-container">
+      <select id="categoryFilter" onchange="filterByCategory()">
+        <option value="">All Categories</option>
+        <option value="Education">Education</option>
+        <option value="Seminars">Seminars</option>
+        <option value="Sports">Sports</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="category" id="eventsContainer">
+    <h3>🚀 Trending Events</h3>
+
+    <div id="educationCategory">
+      <h4>📚 Education</h4>
+    </div><br>
+
+    <div id="seminarCategory">
+      <h4>🎤 Seminars</h4>
+    </div><br>
+
+    <div id="sportsCategory">
+      <h4>🏅 Sports</h4>
+    </div><br>
+  </div>
+
+  <script>
+    function navigateToCreateEvent() {
+      window.location.href = "create.html";
+    }
+
+    function navigateToRegisterEvent() {
+      window.location.href = "register.html";
+    }
+
+    function navigateToViewRegisteredEvents() {
+      window.location.href = "view.html";
+    }
+
+    const events = [
+      { category: 'Education', title: 'AI Workshop', description: 'Learn about Artificial Intelligence in this hands-on workshop.', img: 'academy-2023-news0063-845.jpg' },
+      { category: 'Education', title: 'Cloud Computing Seminar', description: 'A seminar discussing the future of cloud technologies.', img: 'cloud-computing-seminar-topics-for-students.png' },
+      { category: 'Education', title: 'Mathematics Course', description: 'Join the advanced mathematics online course to enhance your skills.', img: '360_F_508103535_BvW4uJs6MKlAVrRPSwGJ1Y36t5pw0EvD.jpg' },
+      { category: 'Seminars', title: 'Modern Event Planning Strategies', description: 'Learn the latest trends and tools in professional event planning.', img: 'images.jpeg' },
+      { category: 'Seminars', title: 'Event Marketing & Branding', description: 'Master branding techniques and marketing strategies for successful events.', img: 'GettyImages-1061499620-1024x683.jpg' },
+      { category: 'Seminars', title: 'Crisis Management in Events', description: 'Understand how to handle unexpected challenges during live events.', img: 'images-2.jpeg' },
+      { category: 'Sports', title: 'College Football Tournament', description: 'Join the inter-college football tournament and show your skills on the field.', img: 'images-3.jpeg' },
+      { category: 'Sports', title: 'Annual Marathon', description: 'Participate in the annual marathon and run for a cause.', img: 'marathon-runner-victory-illustration-360004470.jpg.webp' },
+      { category: 'Sports', title: 'Basketball Championship', description: 'Cheer for your team or sign up to compete in the championship event.', img: 'unnamed.jpg' }
+    ];
+
+    function populateEvents() {
+      const educationCategory = document.getElementById('educationCategory');
+      const seminarCategory = document.getElementById('seminarCategory');
+      const sportsCategory = document.getElementById('sportsCategory');
+      
+      events.forEach(event => {
+        const card = document.createElement('div');
+        card.classList.add('event-card');
+        card.innerHTML = `
+          <img src="${event.img}" alt="${event.title}" />
+          <h4>${event.title}</h4>
+          <p>${event.description}</p>
+        `;
+        card.onclick = () => {
+          window.location.href = '1.html';
+        };
+        
+        if (event.category === 'Education') {
+          educationCategory.appendChild(card);
+        } else if (event.category === 'Seminars') {
+          seminarCategory.appendChild(card);
+        } else if (event.category === 'Sports') {
+          sportsCategory.appendChild(card);
+        }
+      });
+    }
+
+    function searchEvents() {
+      const query = document.getElementById('searchBar').value.toLowerCase();
+      const filteredEvents = events.filter(event => 
+        event.title.toLowerCase().includes(query) || 
+        event.description.toLowerCase().includes(query)
+      );
+
+      document.getElementById('educationCategory').innerHTML = '';
+      document.getElementById('seminarCategory').innerHTML = '';
+      document.getElementById('sportsCategory').innerHTML = '';
+
+      filteredEvents.forEach(event => {
+        const card = document.createElement('div');
+        card.classList.add('event-card');
+        card.innerHTML = `
+          <img src="${event.img}" alt="${event.title}" />
+          <h4>${event.title}</h4>
+          <p>${event.description}</p>
+        `;
+        card.onclick = () => {
+          window.location.href = '1.html';
+        };
+
+        if (event.category === 'Education') {
+          document.getElementById('educationCategory').appendChild(card);
+        } else if (event.category === 'Seminars') {
+          document.getElementById('seminarCategory').appendChild(card);
+        } else if (event.category === 'Sports') {
+          document.getElementById('sportsCategory').appendChild(card);
+        }
+      });
+    }
+
+    function filterByCategory() {
+      const category = document.getElementById('categoryFilter').value;
+
+      document.getElementById('educationCategory').innerHTML = '';
+      document.getElementById('seminarCategory').innerHTML = '';
+      document.getElementById('sportsCategory').innerHTML = '';
+
+      const filteredEvents = events.filter(event => 
+        category === '' || event.category === category
+      );
+
+      filteredEvents.forEach(event => {
+        const card = document.createElement('div');
+        card.classList.add('event-card');
+        card.innerHTML = `
+          <img src="${event.img}" alt="${event.title}" />
+          <h4>${event.title}</h4>
+          <p>${event.description}</p>
+        `;
+        card.onclick = () => {
+          window.location.href = 'register.html';
+        };
+
+        if (event.category === 'Education') {
+          document.getElementById('educationCategory').appendChild(card);
+        } else if (event.category === 'Seminars') {
+          document.getElementById('seminarCategory').appendChild(card);
+        } else if (event.category === 'Sports') {
+          document.getElementById('sportsCategory').appendChild(card);
+        }
+      });
+    }
+
+    populateEvents();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const username = localStorage.getItem("username");
+      if (username) {
+        document.getElementById("login-username").textContent = username;
+      } else {
+        document.getElementById("login-username").textContent = "Guest";
+      }
+    });
+
+    function contact() {
+      window.location.href = "contact.html";
+    }
+
+    function logOut() {
+      localStorage.removeItem("username");
+      window.location.href = "welcome.html";
+    }
+  </script>
+</body>
+</html>

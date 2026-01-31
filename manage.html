@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create and Manage Event - EventSphere</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f0f8ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      align-items: center;
+      padding: 10px 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h2 {
+      color: #007bff;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .header .logout {
+      color: #007bff;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .header .logout:hover {
+      text-decoration: underline;
+    }
+
+    .form-container {
+      background-color: white;
+      width: 100%;
+      max-width: 800px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .form-container h3 {
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    .form-container input,
+    .form-container textarea,
+    .form-container select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .form-container button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .form-container button:hover {
+      background-color: #0056b3;
+    }
+
+    .manage-events {
+      width: 100%;
+      max-width: 800px;
+      margin-top: 40px;
+    }
+
+    .manage-events h3 {
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    .event-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .event-list li {
+      background-color: white;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .event-list li button {
+      background-color: #007bff;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .event-list li button:hover {
+      background-color: #0056b3;
+    }
+
+    .user-list {
+      margin-top: 20px;
+    }
+
+    .user-list table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .user-list table th,
+    .user-list table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    .user-list table th {
+      background-color: #007bff;
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h2>Welcome, <span id="userName"></span></h2>
+    </div>
+    <div class="logout" onclick="logOut()">Log Out</div>
+  </div>
+
+  <div class="form-container">
+    <h3>Create a New Event</h3>
+    <form id="createEventForm">
+      <input type="text" id="eventName" placeholder="Event Name" required />
+      <textarea id="eventDescription" placeholder="Event Description" rows="4" required></textarea>
+      <input type="date" id="eventDate" required />
+      <select id="eventLocation" required>
+        <option value="">Select Location</option>
+        <option value="Madurai">Madurai</option>
+        <option value="Dindigul">Dindigul</option>
+      </select>
+      <button type="submit">Create Event</button>
+    </form>
+  </div>
+
+  <div class="manage-events">
+    <h3>Your Events</h3>
+    <ul class="event-list" id="eventList">
+    </ul>
+  </div>
+
+  <div class="user-list" id="userList">
+    <h3>Registered Users for Event</h3>
+    <table id="userTable">
+
+    </table>
+  </div>
+
+  <script>
+    const userName = localStorage.getItem('eventUser');
+    if (userName) {
+      document.getElementById('userName').textContent = userName;
+    } else {
+      window.location.href = 'getstarted.html'; 
+    }
+
+    function logOut() {
+      localStorage.removeItem('eventUser');
+      window.location.href = 'getstarted.html';
+    }
+
+    let events = [];
+
+    document.getElementById('createEventForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const eventName = document.getElementById('eventName').value;
+      const eventDescription = document.getElementById('eventDescription').value;
+      const eventDate = document.getElementById('eventDate').value;
+      const eventLocation = document.getElementById('eventLocation').value;
+
+      if (eventName && eventDescription && eventDate && eventLocation) {
+        const event = {
+          name: eventName,
+          description: eventDescription,
+          date: eventDate,
+          location: eventLocation,
+          registeredUsers: [
+            { name: 'John Doe', email: 'john@example.com' },
+            { name: 'Jane Smith', email: 'jane@example.com' },
+            { name: 'Alice Johnson', email: 'alice@example.com' },
+            { name: 'Bob Brown', email: 'bob@example.com' },
+            { name: 'Charlie Davis', email: 'charlie@example.com' },
+            { name: 'David Wilson', email: 'david@example.com' },
+            { name: 'Eva Adams', email: 'eva@example.com' },
+            { name: 'Frank Martin', email: 'frank@example.com' },
+            { name: 'Grace Taylor', email: 'grace@example.com' },
+            { name: 'Hannah Moore', email: 'hannah@example.com' },
+          ],
+        };
+
+        events.push(event);
+        const eventList = document.getElementById('eventList');
+        const eventItem = document.createElement('li');
+        eventItem.innerHTML = `${event.name} - ${event.location} <button onclick="manageEvent('${event.name}')">Manage</button>`;
+        eventList.appendChild(eventItem);
+
+        document.getElementById('createEventForm').reset();
+      } else {
+        alert("Please fill in all fields");
+      }
+    });
+
+    function manageEvent(eventName) {
+      const event = events.find(e => e.name === eventName);
+      if (event) {
+        displayRegisteredUsers(event);
+      }
+    }
+
+    function displayRegisteredUsers(event) {
+      const userTable = document.getElementById('userTable');
+      userTable.innerHTML = '';
+
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `<th>User Name</th><th>Email</th>`;
+      userTable.appendChild(headerRow);
+
+      event.registeredUsers.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${user.name}</td><td>${user.email}</td>`;
+        userTable.appendChild(row);
+      });
+    }
+
+  </script>
+</body>
+</html>
